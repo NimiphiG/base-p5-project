@@ -17,23 +17,29 @@ function setup() {
 
 function draw() {
     background(0);
-    strokeWeight(5);
-    fill(255,0,0);
+    noStroke();
+    let length = 2;
 
     while (theta < maxAngle + offset) {
-        //sin wave
-        y = sin(theta-0.4) * amplitude;
-        fill(255,0,50)
-        ellipse(x + frequency/2, y + height/0.5, 20,50);
-        x = ((theta-offset) / maxAngle) * windowWidth;
-        
+        amplitude = sin(theta-offset)*(windowHeight/10)
+        amplitude = ((theta-offset)/maxAngle)* (windowHeight/2)
+        //for sine
+        for (i= length; i>0; i--){
+        y = sin(theta - (i/2)) * amplitude;
+        fill(255-(255/length * i),0,60)
+        ellipse(x, y + height/2, 10,50);
+    
+        }
 
-        y = cos(theta) * amplitude;
-        fill(255,0,0)
-        ellipse(x + frequency / 2, y + height * 0.5, 20,50);
-        theta += 0.1;
-        x = ((theta-offset) / maxAngle) * windowWidth;
+         //for cosine
+         for (i= length; i>0; i--){
+            x = cos(theta - (i/2)) * amplitude;
+            fill(0,255-(255/length * i),60)
+            ellipse(x + 500, y + height/2, 200,5);
+            }
 
+       theta += 0.2;
+       x=((theta - offset)/maxAngle)* windowWidth;
     }
     offset += inc;
     theta = offset;
