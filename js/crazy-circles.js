@@ -30,7 +30,7 @@ function setup() {
     function mouseUp() {
         fr = 10
     }
-    
+
 }
 function draw() {
     background(0);
@@ -60,7 +60,7 @@ frameRate(fr)
             stroke(225 - (255 / length * i), 60, 50,225)
             strokeWeight(10*i)
             fill(200,100, 0,60)
-            ellipse((x) + centerX , centerY, sin(theta) * 500 *(i/4), (sin(theta)) * 500 *(i/4));
+            ellipse((x) + centerX , centerY, sin(theta) * 500 *(i/4), (sin(theta)) * 400 *(i/4));
 
         }
         theta += 0.5;
