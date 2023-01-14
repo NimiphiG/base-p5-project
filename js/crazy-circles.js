@@ -1,44 +1,88 @@
-let x = 0;
-let y = 0;
-let theta = 0;
-let inc = 0.05; // the amount to increment the offset
-let offset = 1.57; // the amount offset from wave start
-let amplitude;
-let frequency;
+
+// set global variables
+let x ;
+let y ;
+let theta ;
 let maxAngle;
-let a = 0;
-let b = 0;
-let length = 10;
-let fr = 10;
+let a;
+let clicked = 1;
+let growth = 1
+
+//how far each frame moves through the waves
+let inc = 0.03; 
+let offset = 0; 
+
+let length = 10; // sets number of elipses drawn by the for loop
+let fr = 10; // sets the initial fps
+
 
 
 function setup() {
 
-    // amplitude = windowHeight * 8;
-    // frequency = windowWidth * 8;
-    maxAngle = (0.05) * TAU;
-    
+    maxAngle = (0.05) * TAU; //sets a limit of the sin wave
+
     createCanvas(windowWidth, windowHeight);
+
+    //sets a mid point on the window
     centerX = windowWidth / 2;
     centerY = windowHeight / 2;
 
-    window.addEventListener('mousedown', mouseDown)
+    window.addEventListener('mousedown', mouseDown) //lower frame rate when mouse is held down
     function mouseDown() {
-        fr = 100
+        fr = 0.5;
+
+        //increase the value of clicked untill 6 then decrese untill 1
+        clicked += growth;
+        if (clicked > 5) {
+            growth = -1
+        };
+        if ((clicked == 1) && (growth == -1)) {
+            growth = 1
+        }
     }
     window.addEventListener('mouseup', mouseUp)
     function mouseUp() {
-        fr = 10
+        fr = 10 //if the mouse is relesed return to 10fps
+    }
+}
+
+function draw() {
+
+    background(0); // clear each frame before drawing the next
+    frameRate(fr) // sets the frame rate based on mouse listeners 
+
+    //moves the sine wave up by inc for the next frame next frame
+    offset += inc;
+    theta = offset;
+
+    while (theta < maxAngle + offset) { //makes sure each frame only runs through the for loop once
+
+        for (let i = length; i > 0; i--) {
+
+            // draws an elipse with a random x position that scales with cosine, a size that scales with sine and styled acording to loop iteration 
+            a = cos(theta)
+            x = (random(-400, 400) * a) + (random(-400, 400) * a);
+            stroke(225 - (255 / length * i), 60, 50, 225);
+            strokeWeight(10 * i);
+            fill(200, 100, 0, 60);
+            ellipse((x) + centerX, centerY, sin(theta) * 400 * (i / 3), (sin(theta)) * 300 * (i / 3));
+
+            //draws an elipse in the center with style and size based on mouse clicked
+            strokeWeight(5 * clicked );
+            stroke(199.5, 60, 50);
+            fill(0, 0, 0, clicked * clicked * (255 / 80));
+            ellipse(centerX, centerY, 25 * clicked * clicked, 25 * clicked * clicked);
+        }
+
+        theta += 1; //ends the while loop for this frame
+
     }
 
 }
-function draw() {
-    background(0);
-    noStroke();
-    
 
-    while (theta < maxAngle + offset) {
-        // amplitude = sin(theta - offset)
+
+//random movement gets bigger when mouse is further from the center
+// amplitude = sin(theta - offset)
         //     // amplitude = ((theta-offset)/maxAngle)* (windowHeight/2)
 
         //     //for mouse move
@@ -50,22 +94,3 @@ function draw() {
         //     noFill()
         //     ellipse(x+windowWidth/2, y+windowHeight/2,500,500);
         //     }
-frameRate(fr)
-
-        // //for click
-        for (let i = length; i > 0; i--) {
-            a = cos(theta) * 2
-            y = (random(200) * a) + (random(200) * a) 
-            x = (random(200) * a) + (random(200) * a);
-            stroke(225 - (255 / length * i), 60, 50,225)
-            strokeWeight(10*i)
-            fill(200,100, 0,60)
-            ellipse((x) + centerX , centerY, sin(theta) * 500 *(i/4), (sin(theta)) * 400 *(i/4));
-
-        }
-        theta += 0.5;
-        x = ((theta - offset) / maxAngle) * windowWidth;
-    }
-    offset += inc;
-    theta = offset;
-}
